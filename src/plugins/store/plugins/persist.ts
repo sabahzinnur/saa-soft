@@ -10,7 +10,6 @@ export const piniaLocalStoragePlugin: PiniaPlugin = ({ store }) => {
         store.$patch(saved)
     }
 
-    // Подписываемся один раз
     store.$subscribe((_, state) => {
         localStorage.setItem(store.$id, JSON.stringify(state))
     }, { flush: 'sync' })
