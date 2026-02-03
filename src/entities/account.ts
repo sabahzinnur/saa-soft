@@ -1,7 +1,7 @@
 export type AccountType = 'LDAP' | 'local'
 
 type AccountBase = {
-    id: string
+    id: number
     tags: string[]
     login: string
     type: AccountType
@@ -18,3 +18,18 @@ export type LocalAccount = AccountBase & {
 }
 
 export type Account = LDAPAccount | LocalAccount
+
+export function createAccount(): Account {
+    return {
+        id: Date.now(),
+        tags: [],
+        login: '',
+        type: 'local',
+        password: ''
+    }
+}
+
+export const accountTypes: { value: AccountType, name: string}[] = [
+    { value: "LDAP", name: 'LDAP' },
+    { value: "local", name: 'Локальная' },
+]

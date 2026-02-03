@@ -1,25 +1,29 @@
-import { ref, computed } from 'vue'
-import { defineStore } from 'pinia'
+import {defineStore} from 'pinia'
 
-import type { Account } from "../entities";
+import type {Account} from "../entities"
 
 
-export const useAccountsStore = defineStore('accounts', () => {
-    const list = ref<Account[]>([])
+export const useAccountsStore = defineStore('accounts', {
+    state: () => ({
+        list: [] as Account[],
+    }),
+    getters: {
+        accounts: (state) => state.list,
+    },
+    actions: {
+        addAccount(account: Account) {
+            this.list.push(account)
+        },
+        removeAccount(id: number) {
+            this.list = this.list
+                .filter(account => account.id !== id)
+        },
+        updateAccount(updates: Account) {
+            const index = this.list
+                .findIndex(account => account.id === updates.id)
+            if (index === -1) return
 
-    const accounts = computed(() => list.value)
-
-    function addAccount(account: Account) {
-        list.value.push(account)
-    }
-
-    function removeAccount(login: string) {
-        list.value = list.value.filter(account => account.login !== login)
-    }
-
-    return {
-        accounts,
-        addAccount,
-        removeAccount,
-    }
+            this.list[index] = updates
+        },
+    },
 })
